@@ -126,7 +126,11 @@ render state = do
   HH.div
     [ HP.attr (HC.AttrName "id") "app" ]
     $ concat
-      [ [ HH.h1 [] [ HH.text "チュートリアルToDoリスト" ] ]
+      [ [ HH.h1 [] [ HH.a
+        [ HP.attr (HC.AttrName "href") "https://github.com/knight9999/MoonLanderPureScript"
+        , HH.attr (HC.AttrName "target") "_blank"
+        , HH.attr (HC.AttrName "style") "text-decoration: none; color: black;"
+        ] [HH.text "チュートリアルToDoリスト"] ] ]
       , map
         ( \opt -> 
           ( HH.label
