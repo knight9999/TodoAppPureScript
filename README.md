@@ -1,3 +1,7 @@
+# これは何
+
+基礎から学ぶVue.jsのコードを参考に、PureScriptで再実装したものです。
+
 # ビルドの仕方
 
 ```
@@ -18,6 +22,7 @@ https://knight9999.github.io/TodoAppPureScript/
 
 基礎から学ぶVue.js 
 ToDoリストを作りながら学習しよう！
+
 https://cr-vue.mio3io.com/tutorials/todo.html#%E5%AE%8C%E6%88%90%E5%BD%A2
 
 
