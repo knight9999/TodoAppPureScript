@@ -31,3 +31,9 @@
     "test": "spago test",
     "build": "spago bundle-app --to public/app.js"
 ```
+
+# onValueInputとonValueChangeの違い
+
+onValueInputは、変化があるたびに送られる。
+onValueChangeは、Submitしたときで、かつ変化があるときのみ
+
