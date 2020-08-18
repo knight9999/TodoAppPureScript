@@ -1,36 +1,14 @@
-# プロジェクトの新規作成
+# ビルドの仕方
 
 ```
-% mkdir TodoApp
-% cd TodoApp
-% npm init -y
-% npm install spago purescript
-% npx spago init
-% npx spago install halogen
+% npm install
+% npx spago install
+% npm run build
 ```
 
-# ディレクトリ作成
+# 動作確認
 
-```
-% mkdir public
-```
-
-# git ignoreに追加
-
-```
-/public/app.js
-```
-
-```
-% git init
-```
-
-# pacakge.json
-
-```
-    "test": "spago test",
-    "build": "spago bundle-app --to public/app.js"
-```
+`public/index.html` をブラウザで開く。
 
 # 参考サイト
 
