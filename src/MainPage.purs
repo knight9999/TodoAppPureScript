@@ -75,6 +75,7 @@ type State = {
   todos :: Array Todo
 , options :: Array Option
 , currentValue :: Int
+, counter :: Int
 }
 
 component :: forall q i o m. (MonadAff m) => (MonadEffect m) => H.Component HH.HTML q i o m
@@ -97,6 +98,7 @@ initialState _ = {
   , Option TodoFinished
   ]
 , currentValue: valueFromOption OptionAll
+, counter: 0
 }
 
 render :: forall m. (MonadAff m) => (MonadEffect m) => State -> H.ComponentHTML Action () m
@@ -127,7 +129,7 @@ render state = do
           )
         ) state.options
       , [ HH.text $ "（" 
-          <> toStringAs decimal (length $ showTodos (optionFromValue state.currentValue) state.todos) 
+          <> toStringAs decimal (length $ visibleTodos (optionFromValue state.currentValue) state.todos) 
           <> "件を表示）" ]
       , [ HH.table [] 
           [ HH.thead []
@@ -147,7 +149,7 @@ render state = do
                   , HH.td [ HP.attr (HC.AttrName "class") "button" ] [ HH.button [] [HH.text "削除"] ]
                   ]
               )
-            ) (showTodos (optionFromValue state.currentValue) state.todos)
+            ) (visibleTodos (optionFromValue state.currentValue) state.todos)
           ]
         ]
       , [ HH.h2 [] [ HH.text "新しい作業の追加" ]
@@ -168,8 +170,8 @@ render state = do
         ]
       ]
 
-showTodos :: Option -> Array Todo -> Array Todo
-showTodos option todos = filter check todos
+visibleTodos :: Option -> Array Todo -> Array Todo
+visibleTodos option todos = filter check todos
   where 
     check todo = case option of
       OptionAll -> true
@@ -204,7 +206,8 @@ handleAction = case _ of
             log val
             HTMLInputElement.setValue "" comment
             pure val
-          pure $ s { todos = concat [s.todos, [ {id: 1, comment: val, state: TodoWorking} ]] }
+          pure $ s { todos = concat [s.todos, [ {id: s.counter + 1, comment: val, state: TodoWorking} ]]
+                   , counter = s.counter + 1 }
         Nothing -> pure s
-    H.modify_ (\st -> st { todos = state.todos })
+    H.modify_ (\st -> st { todos = state.todos, counter = state.counter })
     pure unit
