@@ -127,7 +127,7 @@ render state = do
     [ HP.attr (HC.AttrName "id") "app" ]
     $ concat
       [ [ HH.h1 [] [ HH.a
-        [ HP.attr (HC.AttrName "href") "https://github.com/knight9999/MoonLanderPureScript"
+        [ HP.attr (HC.AttrName "href") "https://github.com/knight9999/TodoAppPureScript"
         , HH.attr (HC.AttrName "target") "_blank"
         , HH.attr (HC.AttrName "style") "text-decoration: none; color: black;"
         ] [HH.text "チュートリアルToDoリスト"] ] ]
