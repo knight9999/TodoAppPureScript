@@ -6,9 +6,13 @@
 % npm run build
 ```
 
-# 動作確認
+# 動作確認方法
 
 `public/index.html` をブラウザで開く。
+
+# 動作確認サイト
+
+https://knight9999.github.io/TodoAppPureScript/
 
 # 参考サイト
 
