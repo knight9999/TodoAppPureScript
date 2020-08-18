@@ -8458,6 +8458,8 @@ var PS = {};
   var tr = element("tr");
   var div = element("div");
   var button = element("button");
+  var a = element("a");
+  exports["a"] = a;
   exports["button"] = button;
   exports["div"] = div;
   exports["form"] = form;
@@ -9704,7 +9706,7 @@ var PS = {};
                   return v1;
               })(v.value0);
           };
-          throw new Error("Failed pattern match at MainPage (line 284, column 7 - line 289, column 55): " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at MainPage (line 288, column 7 - line 293, column 55): " + [ v.constructor.name ]);
       };
       return [  ];
   };
@@ -9784,7 +9786,7 @@ var PS = {};
                           if (x instanceof TodoFinished) {
                               return TodoWorking.value;
                           };
-                          throw new Error("Failed pattern match at MainPage (line 223, column 13 - line 225, column 40): " + [ x.constructor.name ]);
+                          throw new Error("Failed pattern match at MainPage (line 227, column 13 - line 229, column 40): " + [ x.constructor.name ]);
                       };
                       var todos = Data_Functor.map(Data_Functor.functorArray)(function (x) {
                           var $63 = Data_Eq.eq(Data_Eq.eqRec()(Data_Eq.eqRowCons(Data_Eq.eqRowCons(Data_Eq.eqRowCons(Data_Eq.eqRowNil)()(new Data_Symbol.IsSymbol(function () {
@@ -9886,7 +9888,7 @@ var PS = {};
                               if (maybeComment instanceof Data_Maybe.Nothing) {
                                   return Control_Applicative.pure(Effect_Aff.applicativeAff)(s);
                               };
-                              throw new Error("Failed pattern match at MainPage (line 247, column 7 - line 260, column 26): " + [ maybeComment.constructor.name ]);
+                              throw new Error("Failed pattern match at MainPage (line 251, column 7 - line 264, column 26): " + [ maybeComment.constructor.name ]);
                           })))(function (state) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
                                   var $78 = {};
@@ -9907,7 +9909,7 @@ var PS = {};
                       });
                   });
               };
-              throw new Error("Failed pattern match at MainPage (line 207, column 16 - line 263, column 14): " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at MainPage (line 211, column 16 - line 267, column 14): " + [ v.constructor.name ]);
           };
       };
   };
@@ -9920,7 +9922,7 @@ var PS = {};
               if (option instanceof Option) {
                   return Data_Eq.eq(eqTodoState)(todo.state)(option.value0);
               };
-              throw new Error("Failed pattern match at MainPage (line 201, column 22 - line 203, column 42): " + [ option.constructor.name ]);
+              throw new Error("Failed pattern match at MainPage (line 205, column 22 - line 207, column 42): " + [ option.constructor.name ]);
           };
           return Data_Array.filter(isVisible)(todos);
       };
@@ -9939,7 +9941,7 @@ var PS = {};
   var render = function (dictMonadAff) {
       return function (dictMonadEffect) {
           return function (state) {
-              return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.attr("id")("app") ])(Data_Array.concat([ [ Halogen_HTML_Elements.h1([  ])([ Halogen_HTML_Core.text("\u30c1\u30e5\u30fc\u30c8\u30ea\u30a2\u30ebToDo\u30ea\u30b9\u30c8") ]) ], Data_Functor.map(Data_Functor.functorArray)(function (opt) {
+              return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.attr("id")("app") ])(Data_Array.concat([ [ Halogen_HTML_Elements.h1([  ])([ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.attr("href")("https://github.com/knight9999/MoonLanderPureScript"), Halogen_HTML_Properties.attr("target")("_blank"), Halogen_HTML_Properties.attr("style")("text-decoration: none; color: black;") ])([ Halogen_HTML_Core.text("\u30c1\u30e5\u30fc\u30c8\u30ea\u30a2\u30ebToDo\u30ea\u30b9\u30c8") ]) ]) ], Data_Functor.map(Data_Functor.functorArray)(function (opt) {
                   return Halogen_HTML_Elements.label([  ])([ Halogen_HTML_Elements.input((function () {
                       var list = [ Halogen_HTML_Properties.attr("type")("radio"), Halogen_HTML_Properties.attr("name")("listState"), Halogen_HTML_Properties.attr("value")(Data_Int.toStringAs(Data_Int.decimal)(valueFromOption(opt))), Halogen_HTML_Events.onInput(function (v) {
                           return Data_Maybe.Just.create(new SelectOption(opt));
