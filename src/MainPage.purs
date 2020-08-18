@@ -17,7 +17,7 @@ import Data.Array
 import Data.Int
 
 import Effect (Effect, foreachE)
-import Effect.Console (log)
+import Effect.Console (log, logShow)
 import Effect.Class
 
 import Halogen.Aff as HA
@@ -28,13 +28,16 @@ import Web.HTML.Window as Window
 import Web.HTML (window)
 import Web.HTML.HTMLInputElement as HTMLInputElement
 
-data Action = Init | SelectOption Option | Submit Event | Input String | ChangeState Todo | DeleteTodo Todo
+import Simple.JSON
+import Web.HTML.Window (localStorage)
+import Web.Storage.Storage (clear, getItem, removeItem, setItem)
 
-type Todo = {
-  id :: Int
-, comment :: String
-, state :: TodoState
-}
+import Data.Either
+import Data.Semigroup.Foldable
+import Foreign (MultipleErrors)
+
+data Action = Init | SelectOption Option | Submit Event | ChangeState Todo | DeleteTodo Todo
+              -- | Input String 
 
 data TodoState = TodoWorking | TodoFinished
 derive instance eqTodoState :: Eq TodoState
@@ -53,6 +56,22 @@ todoStateFromValue :: Int -> TodoState
 todoStateFromValue = case _ of
   0 -> TodoWorking
   _ -> TodoFinished
+
+type Todo = {
+  id :: Int
+, comment :: String
+, state :: TodoState
+}
+
+newtype StoreTodo = StoreTodo Todo
+
+instance writeForeignStoreTodo :: WriteForeign StoreTodo where
+  writeImpl (StoreTodo todo) = writeImpl { id: todo.id, comment: todo.comment, stateValue: valueFromTodoState todo.state }
+
+instance readForeignStoreTodo :: ReadForeign StoreTodo where
+  readImpl text = do
+    { id, comment, stateValue } :: { id :: Int, comment :: String, stateValue:: Int } <- readImpl text
+    pure (StoreTodo { id, comment,  state: todoStateFromValue stateValue })
 
 data Option = OptionAll | Option TodoState
 derive instance eqOption :: Eq Option
@@ -166,7 +185,7 @@ render state = do
           , HH.input
             [ HP.attr (HC.AttrName "type") "text"
             , HP.attr (HC.AttrName "ref") "comment"
-            , HE.onValueInput $ Just <<< Input
+            -- , HE.onValueInput $ Just <<< Input
             ]
           , HH.text " "
           , HH.button
@@ -177,9 +196,9 @@ render state = do
       ]
 
 visibleTodos :: Option -> Array Todo -> Array Todo
-visibleTodos option todos = filter check todos
+visibleTodos option todos = filter isVisible todos
   where 
-    check todo = case option of
+    isVisible todo = case option of
       OptionAll -> true
       Option state -> todo.state == state
   
@@ -187,14 +206,15 @@ visibleTodos option todos = filter check todos
 handleAction :: forall m o. (MonadAff m) => (MonadEffect m) => Action -> H.HalogenM State Action () o m Unit
 handleAction = case _ of
   Init -> do
-    pure unit
+    todos <- H.liftEffect $ loadData
+    H.modify_ (\st -> st { todos = todos, counter = length todos })
 
   SelectOption opt -> do
     H.modify_ (\st -> st { selectedOption = opt })
 
-  Input str -> do -- This is only log function
-    H.liftEffect $ log str
-    pure unit
+  -- Input str -> do -- This is only log function
+  --   H.liftEffect $ log str
+  --   pure unit
 
   ChangeState todo -> do
     s <- H.get
@@ -205,17 +225,17 @@ handleAction = case _ of
             TodoFinished -> TodoWorking
           ) :: TodoState
       todos = map (\x -> if todo == x then todo { state = (toggle' x.state ) } else x) s.todos
-      --   where
-      --     toggle x = case x of
-      --       TodoWorking -> TodoFinished
-      --       TodoFinished -> TodoWorking
     H.modify_ (\st -> st { todos = todos })
+    s <- H.get
+    H.liftEffect $ saveData s.todos
 
   DeleteTodo todo -> do
     s <- H.get
     let
       todos = filter (\x -> todo /= x) s.todos
     H.modify_ (\st -> st { todos = todos })
+    s <- H.get
+    H.liftEffect $ saveData s.todos
 
   Submit event -> do
     H.liftEffect $ Event.preventDefault event
@@ -228,7 +248,7 @@ handleAction = case _ of
         Just comment -> do
           val <- H.liftEffect do
             val <- HTMLInputElement.value comment
-            log val
+            -- log val
             HTMLInputElement.setValue "" comment
             pure val
           if val /= ""
@@ -239,4 +259,33 @@ handleAction = case _ of
               pure s
         Nothing -> pure s
     H.modify_ (\st -> st { todos = state.todos, counter = state.counter })
+    H.liftEffect $ saveData state.todos
     pure unit
+
+storageKey :: String
+storageKey = "todos-purescript-demo"
+
+saveData :: (Array Todo) -> Effect Unit
+saveData todos = do
+  let text = writeJSON $ StoreTodo <$> todos
+  -- log text
+  w <- window
+  storage <- localStorage w
+  setItem storageKey text storage
+
+loadData :: Effect (Array Todo)
+loadData = do
+  w <- window
+  storage <- localStorage w
+  maybeText <- getItem storageKey storage
+  case maybeText of
+    Just text -> do
+      -- log text
+      case (readJSON text :: Either MultipleErrors (Array StoreTodo)) of
+        Left error -> do
+          traverse1_ logShow error
+          pure []
+        Right (todos :: Array StoreTodo) -> do
+          pure $ (\(StoreTodo todo) -> todo) <$> todos
+    _ -> do
+      pure []

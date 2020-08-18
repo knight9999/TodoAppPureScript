@@ -32,8 +32,11 @@
     "build": "spago bundle-app --to public/app.js"
 ```
 
-# onValueInputとonValueChangeの違い
+# 参考サイト
 
-onValueInputは、変化があるたびに送られる。
-onValueChangeは、Submitしたときで、かつ変化があるときのみ
+基礎から学ぶVue.js 
+ToDoリストを作りながら学習しよう！
+https://cr-vue.mio3io.com/tutorials/todo.html#%E5%AE%8C%E6%88%90%E5%BD%A2
+
+
 
