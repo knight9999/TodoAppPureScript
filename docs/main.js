@@ -9941,7 +9941,7 @@ var PS = {};
   var render = function (dictMonadAff) {
       return function (dictMonadEffect) {
           return function (state) {
-              return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.attr("id")("app") ])(Data_Array.concat([ [ Halogen_HTML_Elements.h1([  ])([ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.attr("href")("https://github.com/knight9999/MoonLanderPureScript"), Halogen_HTML_Properties.attr("target")("_blank"), Halogen_HTML_Properties.attr("style")("text-decoration: none; color: black;") ])([ Halogen_HTML_Core.text("\u30c1\u30e5\u30fc\u30c8\u30ea\u30a2\u30ebToDo\u30ea\u30b9\u30c8") ]) ]) ], Data_Functor.map(Data_Functor.functorArray)(function (opt) {
+              return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.attr("id")("app") ])(Data_Array.concat([ [ Halogen_HTML_Elements.h1([  ])([ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.attr("href")("https://github.com/knight9999/TodoAppPureScript"), Halogen_HTML_Properties.attr("target")("_blank"), Halogen_HTML_Properties.attr("style")("text-decoration: none; color: black;") ])([ Halogen_HTML_Core.text("\u30c1\u30e5\u30fc\u30c8\u30ea\u30a2\u30ebToDo\u30ea\u30b9\u30c8") ]) ]) ], Data_Functor.map(Data_Functor.functorArray)(function (opt) {
                   return Halogen_HTML_Elements.label([  ])([ Halogen_HTML_Elements.input((function () {
                       var list = [ Halogen_HTML_Properties.attr("type")("radio"), Halogen_HTML_Properties.attr("name")("listState"), Halogen_HTML_Properties.attr("value")(Data_Int.toStringAs(Data_Int.decimal)(valueFromOption(opt))), Halogen_HTML_Events.onInput(function (v) {
                           return Data_Maybe.Just.create(new SelectOption(opt));
