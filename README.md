@@ -1,6 +1,6 @@
 # このプロジェクトについて
 
-基礎から学ぶVue.jsのコードを参考に、PureScript + Halogenで再実装したものです。
+「基礎から学ぶVue.js」のコードを参考に、PureScript + Halogenで再実装したものです。
 
 # ビルドの仕方
 
